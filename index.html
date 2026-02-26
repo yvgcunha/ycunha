@@ -3,44 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Finanças Yurão</title>
+    <title>Finanças Yurão - Cloud Master</title>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap');
-
         :root {
             --bg: #f5f5f7; --surface: #ffffff; --border: rgba(0,0,0,0.07);
             --text: #1d1d1f; --text2: #6e6e73; --text3: #aeaeb2; --blue: #0071e3; --green: #28cd41;
-            --red: #ff3b30; --shadow: 0 4px 20px rgba(0,0,0,0.08); --r: 16px;
+            --red: #ff3b30; --orange: #ff9500; --shadow: 0 4px 20px rgba(0,0,0,0.08); --r: 16px;
         }
-
-        /* Dark Mode como padrão */
         [data-theme="dark"], body {
             --bg: #000000; --surface: #1c1c1e; --border: rgba(255,255,255,0.1);
             --text: #f5f5f7; --text2: #a1a1a6;
         }
-
         [data-theme="light"] {
             --bg: #f5f5f7; --surface: #ffffff; --border: rgba(0,0,0,0.07);
             --text: #1d1d1f; --text2: #6e6e73;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'DM Sans', sans-serif; }
         body { background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; height: 100vh; overflow: hidden; }
-
         .layout { display: flex; height: 100vh; width: 100vw; }
-
-        .sidebar { 
-            width: 260px; background: var(--surface); border-right: 1px solid var(--border); 
-            padding: 24px; display: flex; flex-direction: column; gap: 4px; overflow-y: auto;
-            transition: transform 0.3s ease;
-        }
-
+        .sidebar { width: 260px; background: var(--surface); border-right: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; transition: transform 0.3s ease; }
         .main-container { flex: 1; display: flex; flex-direction: column; min-width: 0; }
         .topbar { background: var(--surface); padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .content-area { flex: 1; overflow-y: auto; padding: 20px; }
-
-        /* Mobile Adjustments */
+        
         @media (max-width: 768px) {
             .sidebar { position: fixed; left: 0; top: 0; height: 100%; transform: translateX(-100%); z-index: 1001; }
             .sidebar.active { transform: translateX(0); box-shadow: 10px 0 30px rgba(0,0,0,0.2); }
@@ -51,30 +42,23 @@
 
         .card { background: var(--surface); padding: 20px; border-radius: var(--r); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 20px; }
         .hero-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        
         .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .chart-container { position: relative; height: 250px; width: 100%; }
-
         .nav-item { padding: 12px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--text2); display: flex; align-items: center; gap: 10px; }
-        .nav-item:hover { background: rgba(255,255,255,0.05); }
         .nav-item.active { background: var(--blue); color: white !important; }
-
         .table-container { width: 100%; overflow-x: auto; margin-top: 10px; }
         table { width: 100%; border-collapse: collapse; min-width: 500px; }
         th { text-align: left; padding: 12px; font-size: 10px; color: var(--text3); border-bottom: 2px solid var(--border); text-transform: uppercase; cursor: pointer; }
         td { padding: 12px; font-size: 13px; border-bottom: 1px solid var(--border); }
-
         .btn { padding: 10px 18px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; transition: 0.2s; }
         .btn-primary { background: var(--blue); color: white; }
         .btn-ghost { background: transparent; color: var(--text); font-size: 20px; border:none; cursor:pointer;}
         .form-control { width: 100%; padding: 12px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--bg); color: var(--text); margin-bottom: 10px; outline: none; }
-        
-        .hidden-val { filter: blur(8px); pointer-events: none; user-select: none; transition: filter 0.3s; }
-
+        .hidden-val { filter: blur(8px) !important; pointer-events: none; }
         #loginOverlay { position: fixed; inset: 0; background: var(--bg); z-index: 5000; display: flex; align-items: center; justify-content: center; }
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 2000; }
-        
-        .recurrence-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); cursor: pointer; margin-bottom: 10px; }
+        .progress-container { background: rgba(255,255,255,0.05); height: 24px; border-radius: 12px; overflow: hidden; margin: 15px 0; border: 1px solid var(--border); }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); transition: width 1s ease; }
     </style>
 </head>
 <body data-theme="dark">
@@ -83,20 +67,19 @@
     <div class="card" style="width: 320px; text-align: center;">
         <h2 style="margin-bottom: 20px;">🔐 Finanças 2026</h2>
         <input type="password" id="passInput" class="form-control" placeholder="Senha" style="text-align: center;">
-        <div id="loginError" style="color:var(--red); font-size:12px; display:none; margin-bottom:10px;">Senha incorreta.</div>
         <button class="btn btn-primary" onclick="handleLogin()" style="width: 100%;">Entrar</button>
     </div>
 </div>
 
 <div class="layout" id="mainLayout" style="display:none;">
     <div id="sidebarBackdrop" onclick="toggleSidebar()"></div>
-    
     <aside class="sidebar" id="sidebar">
         <div onclick="resetToHome()" style="display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom: 25px;">
             <div style="background:var(--blue); width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800;">F</div>
             <span style="font-weight:800; font-size:18px;">Dashboard</span>
         </div>
         <div class="nav-item active" id="nav-dashboard" onclick="showView('dashboard')">📊 Dashboard</div>
+        <div class="nav-item" id="nav-reserva" onclick="showView('reserva')">🛡️ Reserva</div>
         <div class="nav-item" id="nav-detalhes" onclick="showView('detalhes')">📋 Movimentações</div>
         <div style="flex:1"></div>
         <div class="card" style="padding:10px; margin-bottom:10px;">
@@ -114,8 +97,8 @@
                 <span id="viewTitle" style="font-weight:800; text-transform:uppercase;">DASHBOARD</span>
             </div>
             <div style="display:flex; gap:10px;">
-                <button class="btn-ghost" id="btnHide" onclick="toggleHide()">👁️</button>
-                <button class="btn-ghost" id="btnTheme" onclick="toggleTheme()">🌓</button>
+                <button class="btn-ghost" onclick="toggleHide()">👁️</button>
+                <button class="btn-ghost" onclick="toggleTheme()">🌓</button>
                 <button class="btn btn-primary" onclick="openModal()">＋</button>
             </div>
         </div>
@@ -127,33 +110,49 @@
     <div class="card" style="width: 400px; padding: 30px;">
         <h3 id="modalHeader">Novo Registro</h3>
         <input type="hidden" id="editId">
-        <select id="fType" class="form-control" onchange="updateCats()">
-            <option value="despesa">Despesa</option>
-            <option value="receita">Receita</option>
-        </select>
-        <input type="text" id="fName" class="form-control" placeholder="Descrição">
-        <input type="number" id="fValue" class="form-control" placeholder="Valor (R$)">
-        <select id="fCat" class="form-control"></select>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px">
-            <select id="fMonth" class="form-control"></select>
-            <input type="number" id="fYear" class="form-control" value="2026">
+        <div id="formMovimentacao">
+            <select id="fType" class="form-control" onchange="updateCats()">
+                <option value="despesa">Despesa</option>
+                <option value="receita">Receita</option>
+            </select>
+            <input type="text" id="fName" class="form-control" placeholder="Descrição">
+            <input type="number" id="fValue" class="form-control" placeholder="Valor (R$)">
+            <select id="fCat" class="form-control"></select>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px">
+                <select id="fMonth" class="form-control"></select>
+                <input type="number" id="fYear" class="form-control" value="2026">
+            </div>
+            <label style="font-size:12px; display:flex; gap:5px; align-items:center; margin-top:5px;"><input type="checkbox" id="fRepeat"> Repetir até Dez/2026</label>
         </div>
-        <label class="recurrence-label" id="recurrenceWrapper">
-            <input type="checkbox" id="fRepeat"> Repetir mensalmente até Dez/2026
-        </label>
-        <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="save()">Confirmar</button>
+        <div id="formReserva" style="display:none;">
+            <select id="rType" class="form-control"><option value="aporte">Aporte (Guardar)</option><option value="resgate">Resgate (Usar)</option></select>
+            <input type="number" id="rValue" class="form-control" placeholder="Valor R$">
+            <input type="date" id="rDate" class="form-control">
+        </div>
+        <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" id="btnConfirm" onclick="save()">Confirmar</button>
         <button class="btn" style="width: 100%; margin-top: 5px; background:none; color:var(--text2)" onclick="closeModal()">Cancelar</button>
     </div>
 </div>
 
 <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBdfBsYSdmK1vve12TX4Qe90O3m180B9PA",
+        authDomain: "financas-yuri.firebaseapp.com",
+        projectId: "financas-yuri",
+        storageBucket: "financas-yuri.firebasestorage.app",
+        messagingSenderId: "1060547800681",
+        appId: "1:1060547800681:web:c426a129d8557b37abbcf8"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     const MONTHS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
     const CATS = { despesa: ['Casa', 'Carro', 'Yuri', 'Alimentação', 'Impostos', 'Outros'], receita: ['Salário', 'Freela', 'Proventos'] };
-    let DATA = JSON.parse(localStorage.getItem('fin_v_final')) || [];
+    let DATA = [];
+    let RESERVA_DATA = [];
     let state = { view: 'dashboard', isHidden: false, theme: 'dark', month: 'all', smartFilter: '', filterColumn: 'all', sortKey: 'id', sortOrder: 'desc' };
     let charts = { line: null, pie: null };
-
-    document.getElementById('passInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
 
     function handleLogin() {
         if(document.getElementById('passInput').value === '130994') {
@@ -161,19 +160,21 @@
             document.getElementById('loginOverlay').style.display = 'none';
             document.getElementById('mainLayout').style.display = 'flex';
             init();
-        } else { document.getElementById('loginError').style.display = 'block'; }
+        }
     }
 
-    function handleLogout() { if(confirm("Sair?")) { localStorage.removeItem('session_active'); location.reload(); } }
-
-    function init() { populateSelectors(); render(); }
+    function init() {
+        populateSelectors();
+        db.collection("movimentacoes").onSnapshot(snap => { DATA = snap.docs.map(d => ({ firebaseId: d.id, ...d.data() })); render(); });
+        db.collection("reserva").onSnapshot(snap => { RESERVA_DATA = snap.docs.map(d => ({ firebaseId: d.id, ...d.data() })); render(); });
+    }
 
     function getFilteredData() {
         const query = state.smartFilter.toLowerCase();
         return DATA.filter(i => {
             const m = state.month === 'all' || i.month == state.month;
             let s = false;
-            if (state.filterColumn === 'all') s = i.name.toLowerCase().includes(query) || i.cat.toLowerCase().includes(query);
+            if (state.filterColumn === 'all') s = i.name.toLowerCase().includes(query) || i.cat.toLowerCase().includes(query) || MONTHS[i.month].toLowerCase().includes(query);
             else if (state.filterColumn === 'name') s = i.name.toLowerCase().includes(query);
             else if (state.filterColumn === 'cat') s = i.cat.toLowerCase().includes(query);
             else if (state.filterColumn === 'month') s = MONTHS[i.month].toLowerCase().includes(query);
@@ -184,11 +185,12 @@
     function render() {
         const container = document.getElementById('pageContent');
         const filtered = getFilteredData();
+        const hideClass = state.isHidden ? 'hidden-val' : '';
         
         const searchHTML = `
             <div class="card" style="padding: 10px; margin-bottom: 15px;">
-                <div class="search-group" style="display:flex; gap:10px;">
-                    <select class="form-control" style="width:120px" onchange="state.filterColumn=this.value; render()">
+                <div style="display:flex; gap:10px;">
+                    <select class="form-control" id="searchCol" style="width:120px" onchange="state.filterColumn=this.value; render()">
                         <option value="all" ${state.filterColumn==='all'?'selected':''}>Tudo</option>
                         <option value="name" ${state.filterColumn==='name'?'selected':''}>Descrição</option>
                         <option value="cat" ${state.filterColumn==='cat'?'selected':''}>Categoria</option>
@@ -196,159 +198,112 @@
                     </select>
                     <input type="text" id="liveSearch" class="form-control" style="margin-bottom:0" placeholder="🔍 Filtrar..." oninput="updateSearch(this.value)" value="${state.smartFilter}">
                 </div>
-            </div>
-        `;
+            </div>`;
 
-        if(state.view === 'dashboard') {
+        if(state.view === 'reserva') {
+            const totalDesp = DATA.filter(i => i.type === 'despesa').reduce((s, i) => s + i.val, 0);
+            const numMeses = new Set(DATA.map(i => i.month)).size || 1;
+            const media = totalDesp / numMeses;
+            const meta = media * 6;
+            const saldo = RESERVA_DATA.reduce((s, i) => s + (i.type === 'aporte' ? i.val : -i.val), 0);
+            const prog = Math.min((saldo / (meta || 1)) * 100, 100).toFixed(1);
+
             container.innerHTML = `
-                <div id="statsGrid"></div>
+                <div class="hero-grid">
+                    <div class="card"><small>SALDO ATUAL</small><h2 class="${hideClass}">R$ ${saldo.toLocaleString()}</h2></div>
+                    <div class="card"><small>META (6 MESES)</small><h2 class="${hideClass}">R$ ${meta.toLocaleString()}</h2></div>
+                    <div class="card"><small>COBERTURA ATUAL</small><h2 class="${hideClass}">${(saldo/(media||1)).toFixed(1)} Meses</h2></div>
+                </div>
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;"><h3>Progresso</h3><b>${prog}%</b></div>
+                    <div class="progress-container"><div class="progress-bar" style="width:${prog}%"></div></div>
+                </div>
+                <div class="card"><h3>Histórico Reserva</h3><div class="table-container">
+                    <table><thead><tr><th>Data</th><th>Tipo</th><th>Valor</th><th>Ação</th></tr></thead>
+                    <tbody>${RESERVA_DATA.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(i=>`<tr><td>${i.date}</td><td>${i.type}</td><td class="${hideClass}">R$ ${i.val.toLocaleString()}</td><td><button onclick="delReserva('${i.firebaseId}')" style="background:none;border:none;cursor:pointer;">🗑️</button></td></tr>`).join('')}</tbody>
+                    </table>
+                </div></div>`;
+        } else {
+            const rec = filtered.filter(i=>i.type==='receita').reduce((s,i)=>s+i.val,0);
+            const desp = filtered.filter(i=>i.type==='despesa').reduce((s,i)=>s+i.val,0);
+            
+            let content = '';
+            if(state.view === 'dashboard') {
+                content = `
+                <div class="hero-grid">
+                    <div class="card"><small>RECEITAS</small><h2 class="${hideClass}">R$ ${rec.toLocaleString()}</h2></div>
+                    <div class="card"><small>DESPESAS</small><h2 class="${hideClass}">R$ ${desp.toLocaleString()}</h2></div>
+                    <div class="card"><small>SALDO</small><h2 class="${hideClass}" style="color:var(--blue)">R$ ${(rec-desp).toLocaleString()}</h2></div>
+                </div>
                 <div class="charts-grid">
                     <div class="card"><h3>Evolução</h3><div class="chart-container"><canvas id="lineChart"></canvas></div></div>
-                    <div class="card"><h3>Categorias (%)</h3><div class="chart-container"><canvas id="pieChart"></canvas></div></div>
-                </div>
-                ${searchHTML}
-                <div class="card"><h3>Tabela Geral</h3><div id="tableTarget"></div></div>
-            `;
-            updateDashboardStats(filtered);
-            setTimeout(() => renderCharts(filtered), 50);
-        } else {
-            container.innerHTML = `${searchHTML}<div class="card"><div id="tableTarget"></div></div>`;
+                    <div class="card"><h3>Categorias</h3><div class="chart-container"><canvas id="pieChart"></canvas></div></div>
+                </div>`;
+            }
+
+            container.innerHTML = content + searchHTML + `<div class="card"><h3>${state.view === 'dashboard' ? 'Movimentações Recentes' : 'Todas as Movimentações'}</h3><div class="table-container" id="tableTarget">${generateTableHTML(filtered)}</div></div>`;
+            if(state.view === 'dashboard') setTimeout(() => renderCharts(filtered), 50);
         }
-        updateTableOnly(filtered);
-    }
-
-    function toggleHide() {
-        state.isHidden = !state.isHidden;
-        const filtered = getFilteredData();
-        updateDashboardStats(filtered);
-        updateTableOnly(filtered);
-    }
-
-    function toggleTheme() {
-        state.theme = state.theme === 'dark' ? 'light' : 'dark';
-        document.body.dataset.theme = state.theme;
     }
 
     function updateSearch(val) {
         state.smartFilter = val;
         const filtered = getFilteredData();
+        const tableTarget = document.getElementById('tableTarget');
+        if(tableTarget) tableTarget.innerHTML = generateTableHTML(filtered);
         if(state.view === 'dashboard') {
-            updateDashboardStats(filtered);
             renderCharts(filtered);
+            render(); // Re-renderiza para atualizar cards superiores
         }
-        updateTableOnly(filtered);
-    }
-
-    function updateDashboardStats(filtered) {
-        const statsGrid = document.getElementById('statsGrid');
-        if(!statsGrid) return;
-        const rec = filtered.filter(i=>i.type==='receita').reduce((s,i)=>s+i.val,0);
-        const desp = filtered.filter(i=>i.type==='despesa').reduce((s,i)=>s+i.val,0);
-        const hideClass = state.isHidden ? 'hidden-val' : '';
-        
-        statsGrid.innerHTML = `
-            <div class="hero-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:15px; margin-bottom:20px;">
-                <div class="card"><small>RECEITAS</small><h2 class="${hideClass}">R$ ${rec.toLocaleString()}</h2></div>
-                <div class="card"><small>DESPESAS</small><h2 class="${hideClass}">R$ ${desp.toLocaleString()}</h2></div>
-                <div class="card"><small>SALDO</small><h2 class="${hideClass}" style="color:var(--blue)">R$ ${(rec-desp).toLocaleString()}</h2></div>
-            </div>
-        `;
-    }
-
-    function updateTableOnly(filtered) {
-        const target = document.getElementById('tableTarget');
-        if(target) target.innerHTML = `<div class="table-container">${generateTableHTML(filtered)}</div>`;
     }
 
     function generateTableHTML(data) {
-        const sorted = [...data].sort((a,b) => {
-            let valA = a[state.sortKey], valB = b[state.sortKey];
-            return state.sortOrder === 'asc' ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
-        });
-        const total = sorted.reduce((s,i) => s + (i.type==='receita' ? i.val : -i.val), 0);
         const hideClass = state.isHidden ? 'hidden-val' : '';
+        const sorted = [...data].sort((a,b) => b.month - a.month);
+        return `<table><thead><tr><th>Mês</th><th>Categoria</th><th>Descrição</th><th>Valor</th><th>Ação</th></tr></thead>
+            <tbody>${sorted.map(i => `<tr><td>${MONTHS[i.month]}</td><td><small>${i.cat}</small></td><td><b>${i.name}</b></td><td style="color:${i.type==='receita'?'var(--green)':'var(--red)'}" class="${hideClass}">R$ ${i.val.toLocaleString()}</td><td><button onclick="edit('${i.firebaseId}')" style="background:none;border:none;cursor:pointer;">✏️</button><button onclick="delMov('${i.firebaseId}')" style="background:none;border:none;cursor:pointer;margin-left:8px">🗑️</button></td></tr>`).join('')}</tbody>
+            </table>`;
+    }
 
-        return `
-            <table>
-                <thead>
-                    <tr><th onclick="toggleSort('month')">Mês</th><th onclick="toggleSort('cat')">Categoria</th><th onclick="toggleSort('name')">Descrição</th><th onclick="toggleSort('val')">Valor</th><th>Ação</th></tr>
-                </thead>
-                <tbody>${sorted.map(i => `
-                    <tr><td>${MONTHS[i.month]}</td><td><small>${i.cat}</small></td><td><b>${i.name}</b></td>
-                    <td style="color:${i.type==='receita'?'var(--green)':'var(--red)'}" class="${hideClass}">R$ ${i.val.toLocaleString()}</td>
-                    <td><button onclick="edit(${i.id})" style="background:none;border:none;cursor:pointer;">✏️</button><button onclick="del(${i.id})" style="background:none;border:none;cursor:pointer;margin-left:8px">🗑️</button></td></tr>
-                `).join('')}</tbody>
-                <tfoot><tr><td colspan="3">SALDO LÍQUIDO</td><td colspan="2" style="color:${total>=0?'var(--green)':'var(--red)'}" class="${hideClass}">R$ ${total.toLocaleString()}</td></tr></tfoot>
-            </table>
-        `;
+    async function save() {
+        if(state.view === 'reserva') {
+            const val = parseFloat(document.getElementById('rValue').value), type = document.getElementById('rType').value, date = document.getElementById('rDate').value;
+            if(val && date) await db.collection("reserva").add({ val, type, date });
+        } else {
+            const id = document.getElementById('editId').value, type = document.getElementById('fType').value, name = document.getElementById('fName').value, val = parseFloat(document.getElementById('fValue').value), cat = document.getElementById('fCat').value, month = parseInt(document.getElementById('fMonth').value), repeat = document.getElementById('fRepeat').checked;
+            if(id) await db.collection("movimentacoes").doc(id).update({ type, name, val, cat, month });
+            else { if(repeat) { for(let m=month; m<=11; m++) await db.collection("movimentacoes").add({ type, name, val, cat, month:m, year:2026 }); } else await db.collection("movimentacoes").add({ type, name, val, cat, month, year:2026 }); }
+        }
+        closeModal();
     }
 
     function renderCharts(data) {
-        const ctxL = document.getElementById('lineChart'), ctxP = document.getElementById('pieChart');
-        if(!ctxL || !ctxP) return;
+        const ctxL = document.getElementById('lineChart'), ctxP = document.getElementById('pieChart'); if(!ctxL) return;
         if(charts.line) charts.line.destroy(); if(charts.pie) charts.pie.destroy();
         const lRec = Array(12).fill(0), lDesp = Array(12).fill(0);
         data.forEach(i => { if(i.type==='receita') lRec[i.month]+=i.val; else lDesp[i.month]+=i.val; });
-        charts.line = new Chart(ctxL, { type: 'line', data: { labels: MONTHS, datasets: [{ label: 'Rec', data: lRec, borderColor: '#28cd41' }, { label: 'Desp', data: lDesp, borderColor: '#ff3b30' }] }, options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+        charts.line = new Chart(ctxL, { type: 'line', data: { labels: MONTHS, datasets: [{ label: 'Rec', data: lRec, borderColor: '#28cd41' }, { label: 'Desp', data: lDesp, borderColor: '#ff3b30' }] }, options: { animation:false, responsive:true, maintainAspectRatio:false } });
         const catMap = {}, despData = data.filter(i => i.type === 'despesa'), totalD = despData.reduce((s, i) => s + i.val, 0);
         despData.forEach(i => catMap[i.cat] = (catMap[i.cat] || 0) + i.val);
-        charts.pie = new Chart(ctxP, { type: 'doughnut', data: { labels: Object.keys(catMap).map(c => `${c} (${totalD>0?((catMap[c]/totalD)*100).toFixed(1):0}%)`), datasets: [{ data: Object.values(catMap), backgroundColor: ['#0071e3', '#28cd41', '#ff9f0a', '#bf5af2', '#ff3b30'] }] }, options: { animation: false, responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, color: '#a1a1a6' } } } } });
+        charts.pie = new Chart(ctxP, { type: 'doughnut', data: { labels: Object.keys(catMap).map(c => `${c} (${totalD>0?((catMap[c]/totalD)*100).toFixed(1):0}%)`), datasets: [{ data: Object.values(catMap), backgroundColor: ['#0071e3', '#28cd41', '#ff950a', '#bf5af2', '#ff3b30'] }] }, options: { animation:false, responsive:true, maintainAspectRatio:false } });
     }
 
-    function save() {
-        const id = document.getElementById('editId').value;
-        const type = document.getElementById('fType').value, name = document.getElementById('fName').value, val = parseFloat(document.getElementById('fValue').value) || 0, cat = document.getElementById('fCat').value, startMonth = parseInt(document.getElementById('fMonth').value), year = parseInt(document.getElementById('fYear').value), repeat = document.getElementById('fRepeat').checked;
-        if(!name || val <= 0) return alert("Erro");
-        if(id) DATA = DATA.map(i => i.id == id ? {...i, type, name, val, cat, month: startMonth, year} : i);
-        else { if(repeat) { for(let m = startMonth; m <= 11; m++) DATA.push({ id: Date.now() + m, type, name, val, cat, month: m, year }); } else DATA.push({ id: Date.now(), type, name, val, cat, month: startMonth, year }); }
-        localStorage.setItem('fin_v_final', JSON.stringify(DATA)); closeModal(); render();
-    }
-
-    function edit(id) {
-        const i = DATA.find(x => x.id == id); openModal();
-        document.getElementById('modalHeader').innerText = "Editar";
-        document.getElementById('editId').value = i.id; document.getElementById('fType').value = i.type; updateCats();
-        document.getElementById('fName').value = i.name; document.getElementById('fValue').value = i.val;
-        document.getElementById('fCat').value = i.cat; document.getElementById('fMonth').value = i.month;
-        document.getElementById('recurrenceWrapper').style.display = 'none';
-    }
-
-    function del(id) { if(confirm("Excluir?")) { DATA = DATA.filter(i => i.id !== id); localStorage.setItem('fin_v_final', JSON.stringify(DATA)); render(); } }
-    
-    // CORREÇÃO SIDEBAR MOBILE
-    function toggleSidebar() { 
-        const sb = document.getElementById('sidebar'); 
-        const bd = document.getElementById('sidebarBackdrop');
-        const isActive = sb.classList.toggle('active');
-        bd.style.display = isActive ? 'block' : 'none';
-    }
-
-    function showView(v) { 
-        state.view = v; 
-        
-        // Se estiver no mobile, fecha o menu ao selecionar
-        if(window.innerWidth <= 768) {
-            const sb = document.getElementById('sidebar');
-            if(sb.classList.contains('active')) {
-                toggleSidebar();
-            }
-        }
-        
-        document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); 
-        const activeNav = document.getElementById('nav-'+v);
-        if(activeNav) activeNav.classList.add('active'); 
-        
-        render(); 
-    }
-
-    function openModal() { document.getElementById('modal').style.display='flex'; document.getElementById('editId').value=''; document.getElementById('fRepeat').checked = false; document.getElementById('recurrenceWrapper').style.display = 'flex'; updateCats(); }
-    function closeModal() { document.getElementById('modal').style.display='none'; }
+    function toggleTheme() { state.theme = state.theme === 'dark' ? 'light' : 'dark'; document.body.dataset.theme = state.theme; }
+    function toggleHide() { state.isHidden = !state.isHidden; render(); }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('sidebarBackdrop').style.display = document.getElementById('sidebarBackdrop').style.display === 'block' ? 'none' : 'block'; }
+    function showView(v) { state.view = v; document.getElementById('viewTitle').innerText = v; document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active')); document.getElementById('nav-' + v).classList.add('active'); if(window.innerWidth <= 768) { document.getElementById('sidebar').classList.remove('active'); document.getElementById('sidebarBackdrop').style.display = 'none'; } render(); }
+    function openModal() { document.getElementById('modal').style.display = 'flex'; if(state.view === 'reserva') { document.getElementById('formMovimentacao').style.display='none'; document.getElementById('formReserva').style.display='block'; } else { document.getElementById('formMovimentacao').style.display='block'; document.getElementById('formReserva').style.display='none'; updateCats(); } }
+    function closeModal() { document.getElementById('modal').style.display = 'none'; document.getElementById('editId').value = ''; }
+    function edit(id) { const i = DATA.find(x => x.firebaseId == id); openModal(); document.getElementById('editId').value = i.firebaseId; document.getElementById('fType').value = i.type; updateCats(); document.getElementById('fName').value = i.name; document.getElementById('fValue').value = i.val; document.getElementById('fCat').value = i.cat; document.getElementById('fMonth').value = i.month; document.getElementById('recurrenceWrapper').style.display = 'none'; }
+    async function delMov(id) { if(confirm("Excluir?")) await db.collection("movimentacoes").doc(id).delete(); }
+    async function delReserva(id) { if(confirm("Excluir?")) await db.collection("reserva").doc(id).delete(); }
     function updateCats() { const t = document.getElementById('fType').value; document.getElementById('fCat').innerHTML = CATS[t].map(c=>`<option value="${c}">${c}</option>`).join(''); }
     function populateSelectors() { const m = document.getElementById('fMonth'), mf = document.getElementById('monthFilter'); MONTHS.forEach((n, i) => { m.innerHTML += `<option value="${i}">${n}</option>`; mf.innerHTML += `<option value="${i}">${n}</option>`; }); }
-    function toggleSort(key) { state.sortOrder = (state.sortKey === key && state.sortOrder === 'asc') ? 'desc' : 'asc'; state.sortKey = key; render(); }
     function updateFilters() { state.month = document.getElementById('monthFilter').value; render(); }
     function resetToHome() { state.month = 'all'; state.smartFilter = ''; state.filterColumn = 'all'; document.getElementById('monthFilter').value = 'all'; showView('dashboard'); }
+    function handleLogout() { localStorage.removeItem('session_active'); location.reload(); }
     window.onload = () => { if(localStorage.getItem('session_active')) { document.getElementById('loginOverlay').style.display = 'none'; document.getElementById('mainLayout').style.display = 'flex'; init(); } };
+    document.getElementById('passInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
 </script>
 </body>
 </html>
