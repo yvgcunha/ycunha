@@ -11,6 +11,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        brand: {
+          teal: '#49a296',
+          black: '#121212',
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -42,9 +46,16 @@ const config: Config = {
         },
       },
       borderRadius: {
+        '4xl': '2rem',
+        '3xl': '1.5rem',
+        '2xl': '1rem',
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      fontFamily: {
+        sans: ['var(--font-geist-sans)', 'Inter', 'sans-serif'],
+        mono: ['var(--font-geist-mono)', 'JetBrains Mono', 'monospace'],
       },
     },
   },

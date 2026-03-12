@@ -131,7 +131,12 @@ body::after {
 }
 .header-left { display: flex; gap: 16px; align-items: flex-start; flex: 1; }
 .avatar-wrap { flex-shrink: 0; }
-#pixel-avatar { display: block; image-rendering: pixelated; }
+.site-logo {
+  display: block;
+  width: 112px;
+  height: 168px;
+  image-rendering: pixelated;
+}
 .title-block { flex: 1; }
 .site-name { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
 .site-name .accent { color: var(--accent); }
@@ -462,7 +467,7 @@ html[data-lang="pt"] .en-only { display: none !important; }
     <header class="site-header">
       <div class="header-left">
         <div class="avatar-wrap">
-          <canvas id="pixel-avatar" width="112" height="168" style="image-rendering:pixelated;"></canvas>
+          <img class="site-logo" src="./logo.svg" alt="Avatar em pixel art de Yuri Cunha" />
         </div>
         <div class="title-block">
           <div class="site-name"><span class="accent">yuri</span> cunha</div>
@@ -878,79 +883,6 @@ html[data-lang="pt"] .en-only { display: none !important; }
 </div>
 
 <script>
-/* ─── PIXEL ART AVATAR ─── */
-(function() {
-  // 20 cols × 28 rows @ 6px → 120×168px
-  const canvas = document.getElementById('pixel-avatar');
-  canvas.width  = 120;
-  canvas.height = 168;
-  const ctx = canvas.getContext('2d');
-  const PX = 6;
-
-  const C = {
-    _: null,
-    K: '#0d0400',  // hair darkest
-    H: '#1c0a05',  // hair dark
-    h: '#2e1409',  // hair mid
-    m: '#3d1c0c',  // hair highlight
-    S: '#c57844',  // skin
-    L: '#d4945e',  // skin light
-    s: '#9a5e2c',  // skin shadow
-    d: '#7a4620',  // skin deep shadow
-    E: '#080302',  // iris/pupil
-    G: '#4a7060',  // iris green
-    w: '#f8f4ee',  // eye white
-    B: '#3d2008',  // eyebrow
-    b: '#4a2810',  // beard
-    k: '#2d1508',  // beard dark
-    W: '#f0e4d0',  // teeth
-    T: '#0a0a0a',  // shirt
-    t: '#141414',  // shirt highlight
-  };
-
-  // 20 cols × 28 rows
-  const MAP = [
-  // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19
-    ['_', '_', '_', 'K', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'K', '_', '_', '_', '_', '_'], // 0
-    ['_', '_', 'K', 'H', 'H', 'h', 'H', 'H', 'H', 'H', 'H', 'H', 'h', 'H', 'H', 'K', '_', '_', '_', '_'], // 1
-    ['_', 'K', 'H', 'H', 'm', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'm', 'H', 'H', 'K', '_', '_', '_'], // 2
-    ['_', 'K', 'H', 'h', 'H', 'H', 'K', 'H', 'H', 'H', 'H', 'K', 'H', 'H', 'h', 'H', 'K', '_', '_', '_'], // 3 curls
-    ['_', '_', 'K', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'K', '_', '_', '_', '_'], // 4
-    ['_', '_', '_', 'S', 'B', 'B', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', '_', '_', '_', '_', '_'], // 5 ← raised brow (char-right = left of image)
-    ['_', '_', '_', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'B', 'B', 'B', 'S', 'S', '_', '_', '_', '_', '_'], // 6 normal brow lower
-    ['_', '_', '_', 'S', 'w', 'E', 'w', 'S', 'S', 'S', 'w', 'G', 'w', 'S', 'S', '_', '_', '_', '_', '_'], // 7 eyes (raised brow side wide open)
-    ['_', '_', '_', 's', 'S', 'S', 's', 'S', 'S', 'S', 's', 'S', 's', 'S', 's', '_', '_', '_', '_', '_'], // 8
-    ['_', '_', '_', 'S', 'S', 'S', 'S', 'S', 's', 's', 'S', 'S', 'S', 'S', 'S', '_', '_', '_', '_', '_'], // 9 nose
-    ['_', '_', '_', 'L', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'L', '_', '_', '_', '_', '_'], // 10
-    ['_', '_', '_', 'S', 'S', 'S', 's', 'W', 'W', 'W', 'W', 's', 'S', 'S', 'S', '_', '_', '_', '_', '_'], // 11 smile
-    ['_', '_', '_', 'S', 'b', 'b', 'b', 'S', 'S', 'S', 'S', 'b', 'b', 'b', 'S', '_', '_', '_', '_', '_'], // 12 moustache/beard top
-    ['_', '_', '_', 'b', 'k', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'k', 'b', '_', '_', '_', '_', '_'], // 13 beard
-    ['_', '_', '_', '_', 'k', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'k', '_', '_', '_', '_', '_', '_'], // 14 chin beard
-    ['_', '_', '_', '_', '_', 'S', 'S', 'S', 'S', 'S', 'S', 'S', '_', '_', '_', '_', '_', '_', '_', '_'], // 15 neck
-    ['_', '_', '_', '_', '_', 'S', 'S', 'S', 'S', 'S', 'S', 'S', '_', '_', '_', '_', '_', '_', '_', '_'], // 16
-    ['T', 'T', 'T', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', 'T', 'T', 'T', '_', '_', '_'], // 17 shoulders RAISED (shrug)
-    ['T', 'T', '_', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', '_', 'T', 'T', '_', '_', '_'], // 18
-    ['T', '_', '_', '_', '_', 'T', 't', 'T', 'T', 't', 'T', '_', '_', '_', '_', '_', 'T', '_', '_', '_'], // 19
-    ['S', 'S', '_', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', '_', 'S', 'S', '_', '_', '_'], // 20 hands
-    ['S', '_', '_', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', '_', '_', 'S', '_', '_', '_'], // 21
-    ['_', '_', '_', '_', '_', 'T', 't', 'T', 'T', 't', 'T', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 22 body
-    ['_', '_', '_', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 23
-    ['_', '_', '_', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 24
-    ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 25
-    ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 26
-    ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 27
-  ];
-
-  MAP.forEach((row, r) => {
-    row.forEach((code, c) => {
-      const color = C[code];
-      if (!color) return;
-      ctx.fillStyle = color;
-      ctx.fillRect(c * PX, r * PX, PX, PX);
-    });
-  });
-})();
-
 /* ─── BOOT SEQUENCE ─── */
 const bootLines = [
   'BIOS v2.1 — yuri-portfolio initialized',

@@ -14,10 +14,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <body className={inter.className}>
-        <div className="flex h-screen overflow-hidden">
+        <div className="flex h-screen overflow-hidden bg-gray-50/50">
           <Sidebar />
-          <main className="flex-1 overflow-y-auto bg-background">
-            <div className="container mx-auto max-w-7xl p-6">{children}</div>
+          <main className="flex-1 overflow-y-auto relative">
+            <div className="max-w-[1600px] mx-auto p-8">{children}</div>
           </main>
         </div>
       </body>
