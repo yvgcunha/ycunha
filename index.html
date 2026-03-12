@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Yuri Cunha · Product Manager</title>
+<meta name="description" content="Senior Product Manager com 7 anos de experiência em produtos financeiros digitais — Pix, BaaS, Cartão, Câmbio e Onboarding.">
+<meta name="author" content="Yuri Vieira Garcia da Cunha">
+
+<meta property="og:title" content="Yuri Cunha · Product Manager">
+<meta property="og:description" content="7 anos construindo produtos financeiros que movem bilhões. Especialista em Pix, BaaS, Cartão e Câmbio.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yuricunha.com">
+<meta property="og:image" content="https://yuricunha.com/og-image.png">
+<meta property="og:locale" content="pt_BR">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Yuri Cunha · Product Manager">
+<meta name="twitter:description" content="Senior PM | Pix · BaaS · Fintech · 7 anos de experiência em produtos financeiros digitais.">
+<meta name="twitter:image" content="https://yuricunha.com/og-image.png">
+
+<!-- Favicon pixel art SVG -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23030a2b'/%3E%3Crect x='10' y='2' width='12' height='3' fill='%231a0a04'/%3E%3Crect x='8' y='4' width='16' height='3' fill='%231a0a04'/%3E%3Crect x='9' y='6' width='14' height='8' fill='%23c47843'/%3E%3Crect x='11' y='9' width='2' height='2' fill='%230a0505'/%3E%3Crect x='19' y='9' width='2' height='2' fill='%230a0505'/%3E%3Crect x='11' y='13' width='4' height='2' fill='%233d1f0a'/%3E%3Crect x='17' y='13' width='4' height='2' fill='%233d1f0a'/%3E%3Crect x='9' y='14' width='14' height='3' fill='%233d1f0a'/%3E%3Crect x='12' y='17' width='8' height='8' fill='%230d0d0d'/%3E%3Crect x='5' y='19' width='7' height='4' fill='%230d0d0d'/%3E%3Crect x='20' y='19' width='7' height='4' fill='%230d0d0d'/%3E%3Crect x='4' y='21' width='4' height='3' fill='%23c47843'/%3E%3Crect x='24' y='21' width='4' height='3' fill='%23c47843'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ─── DESIGN TOKENS ─── */
+:root {
+  --bg:      #030a2b;
+  --bg2:     #061035;
+  --bg3:     #0d1c50;
+  --border:  #1a3060;
+  --accent:  #bbdfce;
+  --accent2: #9ecfbb;
+  --blue:    #7ab8e8;
+  --purple:  #c4a0f0;
+  --red:     #f07070;
+  --yellow:  #e8c86a;
+  --orange:  #f0a870;
+  --text:    #e8f0f8;
+  --text2:   #7a99c0;
+  --text3:   #3d5888;
+  --mono:    'JetBrains Mono', 'Courier New', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* CRT scanlines */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
+  pointer-events: none;
+  z-index: 9990;
+}
+
+/* ─── BOOT SCREEN ─── */
+#boot {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease;
+}
+#boot.fade-out { opacity: 0; pointer-events: none; }
+#boot-inner { width: min(560px, 90vw); }
+.boot-line {
+  color: var(--accent);
+  font-size: 13px;
+  white-space: pre;
+  height: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.boot-line.visible { height: auto; opacity: 1; }
+.boot-logo { color: var(--accent); font-size: 11px; line-height: 1.2; margin-bottom: 24px; white-space: pre; }
+.boot-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 20px; overflow: hidden; }
+.boot-bar-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.05s linear; }
+
+/* ─── WINDOW CHROME ─── */
+.window-wrap { max-width: 940px; margin: 0 auto; padding: 20px 16px 130px; }
+.window-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 10px 16px;
+}
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot-r { background: #ff5f57; }
+.dot-y { background: #febc2e; }
+.dot-g { background: #28c840; }
+.window-title { flex: 1; text-align: center; color: var(--text3); font-size: 12px; margin-right: 36px; }
+.window-body {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0 0 8px 8px;
+  padding: 24px 28px 32px;
+}
+
+/* ─── HEADER ─── */
+.site-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.header-left { display: flex; gap: 16px; align-items: flex-start; flex: 1; }
+.avatar-wrap { flex-shrink: 0; }
+#pixel-avatar { display: block; image-rendering: pixelated; }
+.title-block { flex: 1; }
+.site-name { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+.site-name .accent { color: var(--accent); }
+.site-role { color: var(--text2); font-size: 13px; margin-top: 3px; }
+.site-role .cursor { color: var(--accent); animation: blink 1s step-end infinite; }
+.site-contact { color: var(--text3); font-size: 11px; margin-top: 6px; }
+.site-contact a { color: var(--blue); text-decoration: none; }
+.site-contact a:hover { text-decoration: underline; }
+.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+/* Language toggle */
+.lang-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+.lang-btn .flag { margin-right: 4px; }
+
+/* ─── NAV ─── */
+.nav-sticky-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(3, 10, 43, 0.94);
+  backdrop-filter: blur(12px);
+  margin: 0 -28px 36px;
+  padding: 10px 28px;
+  border-bottom: 1px solid var(--border);
+}
+.terminal-nav { display: flex; flex-wrap: wrap; gap: 6px; }
+.nav-cmd {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 5px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.nav-cmd:hover, .nav-cmd.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(187,223,206,0.06);
+}
+.nav-cmd.active { box-shadow: 0 0 8px rgba(187,223,206,0.15); }
+.nav-cmd .ps { color: var(--accent); opacity: 0.7; margin-right: 4px; }
+
+/* ─── SECTIONS ─── */
+.section {
+  margin-bottom: 52px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  scroll-margin-top: 60px;
+}
+.section.visible { opacity: 1; transform: translateY(0); }
+
+.sec-cmd { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 14px; }
+.sec-prompt { color: var(--text3); }
+.sec-command { color: var(--accent); font-weight: 700; }
+.sec-output-label { color: var(--text3); font-size: 12px; margin-bottom: 16px; }
+
+/* Whoami */
+.whoami-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 16px 20px;
+}
+.whoami-text { color: var(--text); font-size: 13px; line-height: 1.8; }
+.whoami-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.tag { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); font-size: 11px; padding: 2px 9px; border-radius: 3px; }
+.tag.highlight { border-color: var(--accent); color: var(--accent); background: rgba(187,223,206,0.06); }
+
+/* Experience cards */
+.exp-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 18px 22px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.exp-card:hover { border-color: rgba(187,223,206,0.4); box-shadow: 0 0 14px rgba(187,223,206,0.06); }
+.exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+.exp-company { color: var(--accent); font-weight: 700; font-size: 15px; }
+.exp-period { color: var(--text3); font-size: 11px; }
+.exp-role { color: var(--orange); font-size: 12px; margin-bottom: 10px; }
+.exp-desc { color: var(--text2); font-size: 13px; margin-bottom: 10px; line-height: 1.7; }
+.exp-list { list-style: none; display: flex; flex-direction: column; gap: 5px; margin-bottom: 0; }
+.exp-list li { color: var(--text2); font-size: 12px; padding-left: 18px; position: relative; }
+.exp-list li::before { content: '→'; color: var(--accent); position: absolute; left: 0; }
+.exp-list li strong { color: var(--text); }
+
+/* Inline achievements inside exp-card */
+.exp-achievements {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.exp-ach-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+.exp-ach-prompt { color: var(--text3); }
+.exp-ach-cmd { color: var(--accent); font-weight: 700; font-size: 12px; }
+.exp-ach-out { color: var(--text3); font-size: 11px; margin-bottom: 10px; }
+
+/* Counter animation for achievement values */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ach-card.revealed .ach-val {
+  animation: countUp 0.4s ease forwards;
+}
+@keyframes glitch {
+  0%   { text-shadow: none; }
+  20%  { text-shadow: 2px 0 var(--blue), -2px 0 var(--red); }
+  40%  { text-shadow: -1px 0 var(--accent2), 1px 0 var(--purple); }
+  60%  { text-shadow: 1px 0 var(--blue); }
+  80%  { text-shadow: none; }
+  100% { text-shadow: none; }
+}
+.ach-card:hover .ach-val { animation: glitch 0.35s steps(1) forwards; }
+
+/* Achievements grid */
+.ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: 10px;
+}
+.ach-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 12px 12px;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: default;
+}
+.ach-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(187,223,206,0.08);
+}
+.ach-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.2;
+  margin-bottom: 5px;
+}
+.ach-label { color: var(--text); font-size: 11px; line-height: 1.4; }
+.ach-ctx { color: var(--text3); font-size: 10px; margin-top: 4px; }
+
+/* Education */
+.edu-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  transition: border-color 0.2s;
+}
+.edu-card:hover { border-color: rgba(187,223,206,0.35); }
+.edu-left { display: flex; align-items: center; gap: 12px; }
+.edu-check {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(187,223,206,0.12);
+  border: 1.5px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+.edu-degree { color: var(--text); font-weight: 700; font-size: 14px; }
+.edu-school { color: var(--text2); font-size: 12px; margin-top: 2px; }
+.edu-year { color: var(--yellow); font-size: 12px; white-space: nowrap; }
+
+/* Skills */
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.skill-group { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+.skill-title { color: var(--yellow); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.skill-tag { background: var(--bg3); color: var(--text2); font-size: 11px; padding: 2px 8px; border-radius: 3px; border: 1px solid var(--border); }
+
+/* Certifications */
+.cert-list { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; }
+.cert-item { display: flex; align-items: center; gap: 10px; color: var(--text2); font-size: 12px; }
+.cert-item::before { content: '✓'; color: var(--accent); flex-shrink: 0; }
+
+/* Languages */
+.lang-list { display: flex; flex-direction: column; gap: 10px; }
+.lang-row { display: flex; align-items: center; gap: 14px; }
+.lang-bar { flex: 1; max-width: 180px; height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.lang-bar-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+
+/* Contact */
+.contact-grid { display: flex; flex-direction: column; gap: 8px; }
+.contact-row { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+.contact-key { color: var(--purple); min-width: 90px; font-size: 12px; }
+.contact-val { color: var(--text); }
+.contact-val a { color: var(--blue); text-decoration: none; }
+.contact-val a:hover { text-decoration: underline; }
+
+/* ─── STICKY TERMINAL ─── */
+#sticky-term {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(3, 10, 43, 0.97);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  padding: 11px 20px;
+  z-index: 100;
+}
+.term-line {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  max-width: 940px;
+  margin: 0 auto;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.t-user { color: var(--accent); }
+.t-at   { color: var(--text3); }
+.t-host { color: var(--accent); }
+.t-sep  { color: var(--text3); }
+.t-path { color: var(--blue); }
+.t-dollar { color: var(--text3); margin: 0 7px; }
+.t-cmd { color: var(--text); }
+.t-cursor { color: var(--accent); animation: blink 1s step-end infinite; margin-left: 1px; }
+
+/* ─── LANG SYSTEM ─── */
+html[data-lang="en"] .pt-only { display: none !important; }
+html[data-lang="pt"] .en-only { display: none !important; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ─── SCROLL PROGRESS BAR ─── */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--blue));
+  z-index: 10000;
+  transition: width 0.1s linear;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::selection { background: rgba(187,223,206,0.22); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  .ach-grid { grid-template-columns: repeat(2, 1fr); }
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+  .window-body { padding: 16px 14px 24px; }
+  .site-name { font-size: 18px; }
+  .lang-bar { max-width: 100px; }
+  .contact-key { min-width: 70px; }
+  .edu-left { gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
+
+<!-- ═══════════════ BOOT SCREEN ═══════════════ -->
+<div id="boot">
+  <div id="boot-inner">
+    <pre class="boot-logo">
+  ██╗   ██╗██╗   ██╗██████╗ ██╗
+  ╚██╗ ██╔╝██║   ██║██╔══██╗██║
+   ╚████╔╝ ██║   ██║██████╔╝██║
+    ╚██╔╝  ██║   ██║██╔══██╗██║
+     ██║   ╚██████╔╝██║  ██║██║
+     ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝
+    </pre>
+    <div id="boot-lines"></div>
+    <div class="boot-bar"><div class="boot-bar-fill" id="boot-bar-fill"></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<div class="window-wrap">
+  <div class="window-bar">
+    <div class="dot dot-r"></div>
+    <div class="dot dot-y"></div>
+    <div class="dot dot-g"></div>
+    <div class="window-title">yuri@portfolio: ~</div>
+  </div>
+
+  <div class="window-body">
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="header-left">
+        <div class="avatar-wrap">
+          <canvas id="pixel-avatar" width="112" height="168" style="image-rendering:pixelated;"></canvas>
+        </div>
+        <div class="title-block">
+          <div class="site-name"><span class="accent">yuri</span> cunha</div>
+          <div class="site-role">
+            <span class="pt-only">product manager sênior</span>
+            <span class="en-only">senior product manager</span>
+            <span class="cursor">█</span>
+          </div>
+          <div class="site-contact">
+            São Paulo, SP &nbsp;·&nbsp;
+            <a href="mailto:ycunha@icloud.com">ycunha@icloud.com</a> &nbsp;·&nbsp;
+            <a href="https://linkedin.com/in/yuri-vieira-cunha" target="_blank">linkedin</a> &nbsp;·&nbsp;
+            (11) 98718-9010
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="lang-btn" onclick="toggleLang()">
+          <span class="pt-only"><span class="flag">🇺🇸</span> EN</span>
+          <span class="en-only"><span class="flag">🇧🇷</span> PT</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- NAV (sticky) -->
+    <div class="nav-sticky-wrap">
+      <nav class="terminal-nav" id="main-nav">
+        <button class="nav-cmd active" data-target="whoami" onclick="navScrollTo('whoami', this)">
+          <span class="ps">$</span>whoami
+        </button>
+        <button class="nav-cmd" data-target="experience" onclick="navScrollTo('experience', this)">
+          <span class="ps">$</span><span class="pt-only">experiência</span><span class="en-only">experience</span>
+        </button>
+        <button class="nav-cmd" data-target="education" onclick="navScrollTo('education', this)">
+          <span class="ps">$</span><span class="pt-only">formação</span><span class="en-only">education</span>
+        </button>
+        <button class="nav-cmd" data-target="skills" onclick="navScrollTo('skills', this)">
+          <span class="ps">$</span><span class="pt-only">habilidades</span><span class="en-only">skills</span>
+        </button>
+        <button class="nav-cmd" data-target="contact" onclick="navScrollTo('contact', this)">
+          <span class="ps">$</span>contact
+        </button>
+      </nav>
+    </div>
+
+    <!-- ──── WHOAMI ──── -->
+    <section class="section" id="whoami">
+      <div class="sec-cmd">
+        <span class="sec-prompt">yuri@portfolio:~$</span>
+        <span class="sec-command">whoami</span>
+      </div>
+      <div class="sec-output-label pt-only">> carregando perfil...</div>
+      <div class="sec-output-label en-only">> loading profile...</div>
+      <div class="whoami-block">
+        <p class="whoami-text pt-only">
+          Especialista em Produtos Digitais e Financeiros com <strong style="color:var(--text)">7 anos de experiência</strong> em ambientes regulados, atuando com produtos voltados para os segmentos <strong style="color:var(--text)">B2B</strong> (fintechs, estabelecimentos, subcredenciadores) e <strong style="color:var(--text)">B2C</strong> (canal próprio e soluções white label). Forte atuação em Pix, onboarding digital, BaaS, câmbio, cartões e infraestrutura de pagamento.<br><br>
+          Experiência consolidada em discovery, definição de escopo, implementação e evolução de produtos com foco em <strong style="color:var(--text)">eficiência operacional, rentabilidade e impacto financeiro</strong>. Especialista em precificação, modelagem de receita e P&L. Perfil analítico, com atuação integrada a times técnicos e participação ativa em reuniões de C-level.
+        </p>
+        <p class="whoami-text en-only">
+          Digital & Financial Products Specialist with <strong style="color:var(--text)">7 years of experience</strong> in regulated environments, working with <strong style="color:var(--text)">B2B</strong> (fintechs, merchants, sub-acquirers) and <strong style="color:var(--text)">B2C</strong> (own channel and white label solutions) products. Deep expertise in Pix, digital onboarding, BaaS, FX, cards, and payment infrastructure.<br><br>
+          Solid experience in discovery, scoping, implementation, and product evolution with focus on <strong style="color:var(--text)">operational efficiency, profitability, and financial impact</strong>. Specialist in pricing, revenue modeling, and P&L structuring. Analytical profile, working closely with engineering teams and C-level presentations.
+        </p>
+        <div class="whoami-tags">
+          <span class="tag highlight">Pix</span>
+          <span class="tag highlight">BaaS</span>
+          <span class="tag highlight">Cartão / Card</span>
+          <span class="tag highlight">Câmbio / FX</span>
+          <span class="tag">Onboarding</span>
+          <span class="tag">Open Finance</span>
+          <span class="tag">P&amp;L</span>
+          <span class="tag">Discovery</span>
+          <span class="tag">B2B · B2C</span>
+          <span class="tag">Inglês Fluente</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──── EXPERIENCE ──── -->
+    <section class="section" id="experience">
+      <div class="sec-cmd">
+        <span class="sec-prompt">yuri@portfolio:~$</span>
+        <span class="sec-command">cat experience.json</span>
+      </div>
+      <div class="sec-output-label pt-only">> 3 registros encontrados</div>
+      <div class="sec-output-label en-only">> 3 records found</div>
+
+      <!-- ── Pinbank ── -->
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-company">PINBANK BRASIL</div>
+          <div class="exp-period">abr/2024 – <span class="pt-only">atual</span><span class="en-only">present</span></div>
+        </div>
+        <div class="exp-role pt-only">Especialista de Produtos</div>
+        <div class="exp-role en-only">Product Specialist</div>
+        <p class="exp-desc pt-only">
+          Responsável pelo ciclo completo de produtos: Pix, Cartão, Conta Digital, Câmbio, Onboarding e Plataforma BaaS. Atuei na definição de escopo, priorização, discovery, mapeamento de regras de negócio e integrações com APIs internas e externas.
+        </p>
+        <p class="exp-desc en-only">
+          Responsible for the full product lifecycle: Pix, Card, Digital Account, FX, Onboarding, and BaaS Platform. Scoping, prioritization, discovery, business rules mapping, and API integrations.
+        </p>
+        <ul class="exp-list pt-only">
+          <li>Liderança da construção do produto de <strong>câmbio B2B</strong>, precificação por volume e movimentação superior a <strong>USD 40MM/mês</strong></li>
+          <li>Redução de <strong>85%</strong> no tempo de abertura de conta — reformulação do onboarding (50 → 11 campos)</li>
+          <li>Aumento de <strong>R$ 250MM</strong> no volume via Pix (Pix Agendado, Recorrente, ITP via Open Finance, Pix Automático)</li>
+          <li>Construção do produto <strong>cartão pré-pago</strong>: 45 mil unidades contratadas (20 mil ativas), TPV ~R$ 25MM</li>
+          <li>Desenvolvimento da <strong>plataforma BaaS</strong> em produção com parceiros — conta digital, cash-in/out, subcontas, conciliação e transferências de recebíveis</li>
+          <li>Elaboração do modelo de precificação e análise de margens para Cartão, Pix e Câmbio</li>
+          <li>Participação em projetos regulatórios e integrações de sistemas de PLD</li>
+        </ul>
+        <ul class="exp-list en-only">
+          <li>Led the construction of the <strong>B2B FX product</strong>, volume-based pricing, handling over <strong>USD 40M/month</strong></li>
+          <li><strong>85% reduction</strong> in account opening time — onboarding redesign (50 → 11 fields)</li>
+          <li><strong>R$ 250M</strong> increase in Pix volume (Scheduled, Recurring, ITP via Open Finance, Automatic Pix)</li>
+          <li>Built <strong>prepaid card product</strong>: 45K units issued (20K active), TPV ~R$ 25M</li>
+          <li>Developed <strong>BaaS platform</strong> live with strategic partners — digital account, cash-in/out, sub-accounts, reconciliation, receivables</li>
+          <li>Revenue modeling and margin analysis for Card, Pix, and FX</li>
+          <li>Regulatory projects and AML system integrations</li>
+        </ul>
+
+        <!-- Pinbank achievements inline -->
+        <div class="exp-achievements">
+          <div class="exp-ach-header">
+            <span class="exp-ach-prompt">$</span>
+            <span class="exp-ach-cmd">./achievements.sh --company=pinbank</span>
+          </div>
+          <div class="exp-ach-out pt-only">> 6 métricas encontradas</div>
+          <div class="exp-ach-out en-only">> 6 metrics found</div>
+          <div class="ach-grid">
+            <div class="ach-card">
+              <div class="ach-val">USD 40MM</div>
+              <div class="ach-label pt-only">Volume mensal Câmbio B2B</div>
+              <div class="ach-label en-only">Monthly FX B2B Volume</div>
+            </div>
+            <div class="ach-card">
+              <div class="ach-val">+R$ 250MM</div>
+              <div class="ach-label pt-only">Incremento de Volume Pix</div>
+              <div class="ach-label en-only">Pix Volume Increment</div>
+            </div>
+            <div class="ach-card">
+              <div class="ach-val">85%</div>
+              <div class="ach-label pt-only">Redução no onboarding</div>
+              <div class="ach-label en-only">Onboarding time reduction</div>
+              <div class="ach-ctx">50 → 11 campos</div>
+            </div>
+            <div class="ach-card">
+              <div class="ach-val">45K</div>
+              <div class="ach-label pt-only">Cartões emitidos</div>
+              <div class="ach-label en-only">Cards issued</div>
+              <div class="ach-ctx">20K <span class="pt-only">ativas</span><span class="en-only">active</span></div>
+            </div>
+            <div class="ach-card">
+              <div class="ach-val">R$ 25MM</div>
+              <div class="ach-label">TPV <span class="pt-only">Cartão Pré-pago</span><span class="en-only">Prepaid Card</span></div>
+            </div>
+            <div class="ach-card">
+              <div class="ach-val">BaaS</div>
+              <div class="ach-label pt-only">Plataforma em produção</div>
+              <div class="ach-label en-only">Platform live</div>
+              <div class="ach-ctx">Conta · Pix · Recebíveis</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Portal Solar ── -->
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-company">PORTAL SOLAR</div>
+          <div class="exp-period">ago/2021 – abr/2024</div>
+        </div>
+        <div class="exp-role pt-only">Especialista de Produtos Digitais</div>
+        <div class="exp-role en-only">Digital Product Specialist</div>
+        <p class="exp-desc pt-only">
+          Evolução de produtos digitais voltados à operação de franquias e vendas de sistemas solares. Discovery, priorização de backlog e desenvolvimento de funcionalidades com foco em eficiência operacional e digitalização do processo de venda.
+        </p>
+        <p class="exp-desc en-only">
+          Evolution of digital products for franchise operations and solar system sales. Discovery, backlog prioritization, and feature development focused on operational efficiency and sales process digitization.
+        </p>
+        <ul class="exp-list pt-only">
+          <li>Redução de <strong>50%</strong> no SLA de vendas com implantação do APP de vendas</li>
+          <li><strong>+250 franqueados</strong> ativos utilizando as ferramentas desenvolvidas</li>
+          <li><strong>+12 mil propostas</strong> registradas em plataforma própria, ticket médio de R$ 14 mil</li>
+          <li>Reformulação do site com foco em SEO, elevando para <strong>6MM de acessos anuais</strong></li>
+          <li>Integrações com gateway de pagamento (Pagar.me) e APIs externas</li>
+          <li>Implementação de automações para fluxo de clientes e suporte ao back office</li>
+        </ul>
+        <ul class="exp-list en-only">
+          <li><strong>50% reduction</strong> in sales SLA with the deployment of the sales app</li>
+          <li><strong>250+ active franchisees</strong> using developed tools</li>
+          <li><strong>12K+ proposals</strong> on proprietary platform, avg ticket R$ 14K</li>
+          <li>Website revamp focused on SEO — elevated to <strong>6M annual visits</strong></li>
+          <li>Integration with payment gateway (Pagar.me) and external APIs</li>
+          <li>Automation of customer workflows and back office support</li>
+        </ul>
+
+        <!-- Portal Solar achievements inline -->
+        <div class="exp-achievements">
+          <div class="exp-ach-header">
+            <span class="exp-ach-prompt">$</span>
+            <span class="exp-ach-cmd">./achievements.sh --company=portal-solar</span>
+          </div>
+          <div class="exp-ach-out pt-only">> 4 métricas encontradas</div>
+          <div class="exp-ach-out en-only">> 4 metrics found</div>
+          <div class="ach-grid">
+            <div class="ach-card">
+              <div class="ach-val">50%</div>
+              <div class="ach-label pt-only">Redução no SLA de vendas</div>
+              <div class="ach-label en-only">Sales SLA reduction</div>
+              <div class="ach-ctx">APP <span class="pt-only">de vendas</span><span class="en-only">launch</span></div>
+            </div>
+            <div class="ach-card">
+              <div class="ach-val">+250</div>
+              <div class="ach-label pt-only">Franqueados ativos</div>
+              <div class="ach-label en-only">Active franchisees</div>
+            </div>
+            <div class="ach-card">
+              <div class="ach-val">12K+</div>
+              <div class="ach-label pt-only">Propostas registradas</div>
+              <div class="ach-label en-only">Proposals on platform</div>
+              <div class="ach-ctx">ticket médio R$ 14K</div>
+            </div>
+            <div class="ach-card">
+              <div class="ach-val">6MM</div>
+              <div class="ach-label pt-only">Acessos anuais ao site</div>
+              <div class="ach-label en-only">Annual site visits</div>
+              <div class="ach-ctx">SEO revamp</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Santander ── -->
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-company">BANCO SANTANDER</div>
+          <div class="exp-period">set/2018 – ago/2021</div>
+        </div>
+        <div class="exp-role pt-only">Analista de Planejamento e Negócios</div>
+        <div class="exp-role en-only">Planning & Business Analyst</div>
+        <p class="exp-desc pt-only">
+          Atuação em iniciativas de transformação de agências e projetos ESG. Apoio ao mapeamento de processos e participação em squads com metodologia ágil. Destaque para o projeto <em>Branch Transformation</em> e iniciativas de eficiência operacional.
+        </p>
+        <p class="exp-desc en-only">
+          Branch transformation initiatives and ESG projects. Process mapping and agile squad participation. Highlights: <em>Branch Transformation</em> project and operational efficiency initiatives.
+        </p>
+      </div>
+    </section>
+
+    <!-- ──── EDUCATION ──── -->
+    <section class="section" id="education">
+      <div class="sec-cmd">
+        <span class="sec-prompt">yuri@portfolio:~$</span>
+        <span class="sec-command pt-only">ls formacao/</span>
+        <span class="sec-command en-only">ls education/</span>
+      </div>
+      <div class="sec-output-label pt-only">> 2 arquivos encontrados</div>
+      <div class="sec-output-label en-only">> 2 files found</div>
+
+      <div class="edu-card">
+        <div class="edu-left">
+          <div class="edu-check">✓</div>
+          <div>
+            <div class="edu-degree pt-only">MBA Executivo em Finanças</div>
+            <div class="edu-degree en-only">Executive MBA in Finance</div>
+            <div class="edu-school">IBMEC</div>
+          </div>
+        </div>
+        <div class="edu-year">2022</div>
+      </div>
+
+      <div class="edu-card">
+        <div class="edu-left">
+          <div class="edu-check">✓</div>
+          <div>
+            <div class="edu-degree pt-only">Engenharia Civil</div>
+            <div class="edu-degree en-only">Civil Engineering</div>
+            <div class="edu-school pt-only">Universidade Presbiteriana Mackenzie</div>
+            <div class="edu-school en-only">Mackenzie University</div>
+          </div>
+        </div>
+        <div class="edu-year">2019</div>
+      </div>
+    </section>
+
+    <!-- ──── SKILLS ──── -->
+    <section class="section" id="skills">
+      <div class="sec-cmd">
+        <span class="sec-prompt">yuri@portfolio:~$</span>
+        <span class="sec-command pt-only">ls habilidades/</span>
+        <span class="sec-command en-only">ls skills/</span>
+      </div>
+      <div class="sec-output-label pt-only">> ferramentas &amp; certificações</div>
+      <div class="sec-output-label en-only">> tools &amp; certifications</div>
+
+      <div class="skills-grid">
+        <div class="skill-group">
+          <div class="skill-title pt-only">Produto</div>
+          <div class="skill-title en-only">Product</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Discovery</span>
+            <span class="skill-tag">Roadmap</span>
+            <span class="skill-tag">OKRs</span>
+            <span class="skill-tag">KPIs</span>
+            <span class="skill-tag">P&amp;L</span>
+            <span class="skill-tag">Pricing</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-title">Analytics</div>
+          <div class="skill-tags">
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">Power BI</span>
+            <span class="skill-tag">Metabase</span>
+            <span class="skill-tag">Google Analytics</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-title pt-only">Gestão</div>
+          <div class="skill-title en-only">Management</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Jira</span>
+            <span class="skill-tag">ClickUp</span>
+            <span class="skill-tag">Trello</span>
+            <span class="skill-tag">Monday</span>
+            <span class="skill-tag">Notion</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-title">Design / UX</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Adobe XD</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-title">CRM / Ops</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Salesforce</span>
+            <span class="skill-tag">Pipefy</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-title pt-only">Idiomas</div>
+          <div class="skill-title en-only">Languages</div>
+          <div class="lang-list" style="margin-top:4px">
+            <div class="lang-row">
+              <span style="font-size:11px;color:var(--text);min-width:80px">Português</span>
+              <div class="lang-bar"><div class="lang-bar-fill" style="width:100%"></div></div>
+            </div>
+            <div class="lang-row">
+              <span style="font-size:11px;color:var(--text);min-width:80px">Inglês</span>
+              <div class="lang-bar"><div class="lang-bar-fill" style="width:90%"></div></div>
+            </div>
+            <div class="lang-row">
+              <span style="font-size:11px;color:var(--text);min-width:80px">Espanhol</span>
+              <div class="lang-bar"><div class="lang-bar-fill" style="width:55%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cert-list">
+        <div class="cert-item">PM3 – Métricas Digitais (2023)</div>
+        <div class="cert-item">DNC – Product Discovery · SQL · MVP · Analytics · UX/UI · Agile (2023)</div>
+        <div class="cert-item">Green Belt Lean Six Sigma – EDTI</div>
+        <div class="cert-item">Scrum Fundamentals – Scrum.org</div>
+        <div class="cert-item">Product Management – Pendo</div>
+      </div>
+    </section>
+
+    <!-- ──── CONTACT ──── -->
+    <section class="section" id="contact">
+      <div class="sec-cmd">
+        <span class="sec-prompt">yuri@portfolio:~$</span>
+        <span class="sec-command">contact --all</span>
+      </div>
+      <div class="sec-output-label">> output:</div>
+      <div class="contact-grid">
+        <div class="contact-row">
+          <span class="contact-key">email</span>
+          <span class="contact-val"><a href="mailto:ycunha@icloud.com">ycunha@icloud.com</a></span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-key">phone</span>
+          <span class="contact-val">(11) 98718-9010</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-key">linkedin</span>
+          <span class="contact-val"><a href="https://linkedin.com/in/yuri-vieira-cunha" target="_blank">linkedin.com/in/yuri-vieira-cunha</a></span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-key">location</span>
+          <span class="contact-val">São Paulo – SP, <span class="pt-only">Brasil</span><span class="en-only">Brazil</span></span>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /window-body -->
+</div><!-- /window-wrap -->
+
+<!-- STICKY TERMINAL -->
+<div id="sticky-term">
+  <div class="term-line">
+    <span class="t-user">yuri</span>
+    <span class="t-at">@</span>
+    <span class="t-host">portfolio</span>
+    <span class="t-sep">:</span>
+    <span class="t-path">~/products</span>
+    <span class="t-dollar">$</span>
+    <span class="t-cmd" id="term-cmd"></span>
+    <span class="t-cursor">█</span>
+  </div>
+</div>
+
+<script>
+/* ─── PIXEL ART AVATAR ─── */
+(function() {
+  // 20 cols × 28 rows @ 6px → 120×168px
+  const canvas = document.getElementById('pixel-avatar');
+  canvas.width  = 120;
+  canvas.height = 168;
+  const ctx = canvas.getContext('2d');
+  const PX = 6;
+
+  const C = {
+    _: null,
+    K: '#0d0400',  // hair darkest
+    H: '#1c0a05',  // hair dark
+    h: '#2e1409',  // hair mid
+    m: '#3d1c0c',  // hair highlight
+    S: '#c57844',  // skin
+    L: '#d4945e',  // skin light
+    s: '#9a5e2c',  // skin shadow
+    d: '#7a4620',  // skin deep shadow
+    E: '#080302',  // iris/pupil
+    G: '#4a7060',  // iris green
+    w: '#f8f4ee',  // eye white
+    B: '#3d2008',  // eyebrow
+    b: '#4a2810',  // beard
+    k: '#2d1508',  // beard dark
+    W: '#f0e4d0',  // teeth
+    T: '#0a0a0a',  // shirt
+    t: '#141414',  // shirt highlight
+  };
+
+  // 20 cols × 28 rows
+  const MAP = [
+  // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19
+    ['_', '_', '_', 'K', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'K', '_', '_', '_', '_', '_'], // 0
+    ['_', '_', 'K', 'H', 'H', 'h', 'H', 'H', 'H', 'H', 'H', 'H', 'h', 'H', 'H', 'K', '_', '_', '_', '_'], // 1
+    ['_', 'K', 'H', 'H', 'm', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'm', 'H', 'H', 'K', '_', '_', '_'], // 2
+    ['_', 'K', 'H', 'h', 'H', 'H', 'K', 'H', 'H', 'H', 'H', 'K', 'H', 'H', 'h', 'H', 'K', '_', '_', '_'], // 3 curls
+    ['_', '_', 'K', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'K', '_', '_', '_', '_'], // 4
+    ['_', '_', '_', 'S', 'B', 'B', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', '_', '_', '_', '_', '_'], // 5 ← raised brow (char-right = left of image)
+    ['_', '_', '_', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'B', 'B', 'B', 'S', 'S', '_', '_', '_', '_', '_'], // 6 normal brow lower
+    ['_', '_', '_', 'S', 'w', 'E', 'w', 'S', 'S', 'S', 'w', 'G', 'w', 'S', 'S', '_', '_', '_', '_', '_'], // 7 eyes (raised brow side wide open)
+    ['_', '_', '_', 's', 'S', 'S', 's', 'S', 'S', 'S', 's', 'S', 's', 'S', 's', '_', '_', '_', '_', '_'], // 8
+    ['_', '_', '_', 'S', 'S', 'S', 'S', 'S', 's', 's', 'S', 'S', 'S', 'S', 'S', '_', '_', '_', '_', '_'], // 9 nose
+    ['_', '_', '_', 'L', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'L', '_', '_', '_', '_', '_'], // 10
+    ['_', '_', '_', 'S', 'S', 'S', 's', 'W', 'W', 'W', 'W', 's', 'S', 'S', 'S', '_', '_', '_', '_', '_'], // 11 smile
+    ['_', '_', '_', 'S', 'b', 'b', 'b', 'S', 'S', 'S', 'S', 'b', 'b', 'b', 'S', '_', '_', '_', '_', '_'], // 12 moustache/beard top
+    ['_', '_', '_', 'b', 'k', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'k', 'b', '_', '_', '_', '_', '_'], // 13 beard
+    ['_', '_', '_', '_', 'k', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'k', '_', '_', '_', '_', '_', '_'], // 14 chin beard
+    ['_', '_', '_', '_', '_', 'S', 'S', 'S', 'S', 'S', 'S', 'S', '_', '_', '_', '_', '_', '_', '_', '_'], // 15 neck
+    ['_', '_', '_', '_', '_', 'S', 'S', 'S', 'S', 'S', 'S', 'S', '_', '_', '_', '_', '_', '_', '_', '_'], // 16
+    ['T', 'T', 'T', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', 'T', 'T', 'T', '_', '_', '_'], // 17 shoulders RAISED (shrug)
+    ['T', 'T', '_', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', '_', 'T', 'T', '_', '_', '_'], // 18
+    ['T', '_', '_', '_', '_', 'T', 't', 'T', 'T', 't', 'T', '_', '_', '_', '_', '_', 'T', '_', '_', '_'], // 19
+    ['S', 'S', '_', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', '_', 'S', 'S', '_', '_', '_'], // 20 hands
+    ['S', '_', '_', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', '_', '_', 'S', '_', '_', '_'], // 21
+    ['_', '_', '_', '_', '_', 'T', 't', 'T', 'T', 't', 'T', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 22 body
+    ['_', '_', '_', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 23
+    ['_', '_', '_', '_', '_', 'T', 'T', 'T', 'T', 'T', 'T', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 24
+    ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 25
+    ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 26
+    ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], // 27
+  ];
+
+  MAP.forEach((row, r) => {
+    row.forEach((code, c) => {
+      const color = C[code];
+      if (!color) return;
+      ctx.fillStyle = color;
+      ctx.fillRect(c * PX, r * PX, PX, PX);
+    });
+  });
+})();
+
+/* ─── BOOT SEQUENCE ─── */
+const bootLines = [
+  'BIOS v2.1 — yuri-portfolio initialized',
+  'Loading kernel modules: [product.ko] [design.ko] [fintech.ko]',
+  'Mounting filesystem: /products  OK',
+  'Starting services: pix.service  OK',
+  'Starting services: baas.service OK',
+  'Starting services: card.service OK',
+  'All systems nominal. Welcome.',
+];
+
+async function runBoot() {
+  const container = document.getElementById('boot-lines');
+  const bar = document.getElementById('boot-bar-fill');
+  for (let i = 0; i < bootLines.length; i++) {
+    const el = document.createElement('div');
+    el.className = 'boot-line';
+    el.textContent = bootLines[i];
+    container.appendChild(el);
+    await sleep(60);
+    el.classList.add('visible');
+    bar.style.width = ((i + 1) / bootLines.length * 100) + '%';
+    await sleep(200);
+  }
+  await sleep(500);
+  const boot = document.getElementById('boot');
+  boot.classList.add('fade-out');
+  setTimeout(() => { boot.style.display = 'none'; revealSections(); }, 700);
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+/* ─── SECTIONS REVEAL ─── */
+function revealSections() {
+  document.querySelectorAll('.section').forEach((s, i) => {
+    setTimeout(() => s.classList.add('visible'), i * 120);
+  });
+}
+
+/* ─── NAV SCROLL ─── */
+let scrollSpyLocked = false;
+
+function navScrollTo(id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  // lock spy briefly so click sets active correctly
+  scrollSpyLocked = true;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setActiveNav(id);
+  setTimeout(() => { scrollSpyLocked = false; }, 900);
+}
+
+function setActiveNav(id) {
+  document.querySelectorAll('.nav-cmd').forEach(b => {
+    b.classList.toggle('active', b.dataset.target === id);
+  });
+}
+
+/* ─── SCROLL SPY ─── */
+function initScrollSpy() {
+  const sections = ['whoami', 'experience', 'education', 'skills', 'contact'];
+  const observers = new IntersectionObserver((entries) => {
+    if (scrollSpyLocked) return;
+    entries.forEach(entry => {
+      if (entry.isIntersecting) setActiveNav(entry.target.id);
+    });
+  }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observers.observe(el);
+  });
+}
+
+/* ─── ACHIEVEMENT CARDS REVEAL ─── */
+function initAchReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.ach-card').forEach((card, i) => {
+          setTimeout(() => card.classList.add('revealed'), i * 80);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.exp-achievements').forEach(el => observer.observe(el));
+}
+
+/* ─── LANG TOGGLE ─── */
+function toggleLang() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-lang');
+  html.setAttribute('data-lang', current === 'pt' ? 'en' : 'pt');
+  html.lang = current === 'pt' ? 'en' : 'pt-BR';
+}
+
+/* ─── STICKY TERMINAL CYCLING COMMANDS ─── */
+const COMMANDS = [
+  'git log --oneline --all | head -5',
+  'SELECT SUM(volume) FROM pix_transactions WHERE date = CURDATE()',
+  'curl -X GET /api/v2/products/pix/metrics',
+  'kubectl get pods -n fintech-prod',
+  'npm run analyze -- --product=baas',
+  'grep -r "discovery" roadmap.md | wc -l',
+  './generate-pl.sh --quarter=Q4-2024',
+  'cat products/card.conf | grep "tpv"',
+  'python metrics.py --segment=b2b --fx=true',
+  "psql -c \"SELECT count(*) FROM onboardings WHERE status='active'\"",
+];
+
+let cmdIdx = 0;
+const termCmd = document.getElementById('term-cmd');
+
+async function typeCommand(cmd) {
+  termCmd.textContent = '';
+  for (let i = 0; i <= cmd.length; i++) {
+    termCmd.textContent = cmd.slice(0, i);
+    await sleep(40 + Math.random() * 28);
+  }
+  await sleep(1800);
+  for (let i = cmd.length; i >= 0; i--) {
+    termCmd.textContent = cmd.slice(0, i);
+    await sleep(16);
+  }
+  await sleep(400);
+}
+
+async function cycleCommands() {
+  while (true) {
+    await typeCommand(COMMANDS[cmdIdx % COMMANDS.length]);
+    cmdIdx++;
+  }
+}
+
+/* ─── SCROLL PROGRESS ─── */
+function initScrollProgress() {
+  const bar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const total = document.body.scrollHeight - window.innerHeight;
+    const pct = total > 0 ? (window.scrollY / total) * 100 : 0;
+    bar.style.width = pct + '%';
+  }, { passive: true });
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  runBoot();
+  cycleCommands();
+  initScrollSpy();
+  initAchReveal();
+  initScrollProgress();
+});
+</script>
+</body>
+</html>
