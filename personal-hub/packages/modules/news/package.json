@@ -1,0 +1,28 @@
+{
+  "name": "@hub/news",
+  "version": "0.0.1",
+  "private": true,
+  "description": "News aggregator module - RSS feeds, custom sources",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hub/lib": "workspace:*",
+    "@hub/ui": "workspace:*",
+    "@hub/supabase": "workspace:*",
+    "@supabase/supabase-js": "^2.47.10"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "@types/react": "^19.0.7",
+    "typescript": "^5.7.3"
+  }
+}

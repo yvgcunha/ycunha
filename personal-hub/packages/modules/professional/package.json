@@ -1,0 +1,26 @@
+{
+  "name": "@hub/professional",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Professional module - career, skills, networking, portfolio",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hub/lib": "workspace:*",
+    "@hub/ui": "workspace:*",
+    "@hub/supabase": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.7",
+    "typescript": "^5.7.3"
+  }
+}
