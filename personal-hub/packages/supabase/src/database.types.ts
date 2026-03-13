@@ -56,9 +56,9 @@ export interface Database {
         Update: { name?: string; url?: string; feed_url?: string; category?: string; enabled?: boolean; favicon?: string | null }
       }
       news_articles: {
-        Row: { id: string; source_id: string; external_id: string | null; title: string; url: string; description: string | null; image_url: string | null; published_at: string; created_at: string }
-        Insert: { id?: string; source_id: string; external_id?: string | null; title: string; url: string; description?: string | null; image_url?: string | null; published_at: string }
-        Update: { title?: string; description?: string | null; image_url?: string | null }
+        Row: { id: string; source_id: string; external_id: string | null; title: string; url: string; description: string | null; image_url: string | null; published_at: string; created_at: string; executive_summary: string | null; tags: string[] | null; relevance: 'Alta' | 'Média' | 'Baixa' | null; impact: string | null; hash: string | null; category: string | null }
+        Insert: { id?: string; source_id: string; external_id?: string | null; title: string; url: string; description?: string | null; image_url?: string | null; published_at: string; executive_summary?: string | null; tags?: string[] | null; relevance?: 'Alta' | 'Média' | 'Baixa' | null; impact?: string | null; hash?: string | null; category?: string | null }
+        Update: { title?: string; description?: string | null; image_url?: string | null; executive_summary?: string | null; tags?: string[] | null; relevance?: 'Alta' | 'Média' | 'Baixa' | null; impact?: string | null; hash?: string | null; category?: string | null }
       }
       news_user_state: {
         Row: { id: string; user_id: string; article_id: string; read: boolean; saved: boolean; created_at: string; updated_at: string }

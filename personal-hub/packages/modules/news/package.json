@@ -14,7 +14,9 @@
     "@hub/lib": "workspace:*",
     "@hub/ui": "workspace:*",
     "@hub/supabase": "workspace:*",
-    "@supabase/supabase-js": "^2.47.10"
+    "@supabase/supabase-js": "^2.47.10",
+    "rss-parser": "^3.13.0",
+    "lucide-react": "^0.468.0"
   },
   "peerDependencies": {
     "react": "^19.0.0",

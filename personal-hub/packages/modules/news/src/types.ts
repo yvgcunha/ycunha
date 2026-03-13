@@ -1,6 +1,7 @@
 import type { BaseEntity } from '@hub/lib/types'
 
 export interface NewsSource extends BaseEntity {
+  id: string
   userId: string
   name: string
   url: string
@@ -21,6 +22,13 @@ export interface NewsArticle {
   publishedAt: string
   read: boolean
   saved: boolean
+  // Enriched Morning Brief fields
+  executiveSummary?: string
+  tags?: string[]
+  relevance?: 'Alta' | 'Média' | 'Baixa'
+  impact?: string
+  hash?: string
+  category?: string
 }
 
 export interface NewsSummary {
