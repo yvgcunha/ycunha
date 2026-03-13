@@ -8,7 +8,6 @@ const modules = [
   { href: '/tasks', label: 'Tarefas', code: 'TK' },
   { href: '/notes', label: 'Notas', code: 'NT' },
   { href: '/news', label: 'Notícias', code: 'NW' },
-  { href: '/reading', label: 'Leituras', code: 'RD' },
   { href: '/professional', label: 'Profissional', code: 'PR' },
 ]
 
