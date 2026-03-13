@@ -42,3 +42,23 @@ export interface ProfessionalSummary {
   contactsCount: number
   upcomingMilestones: Milestone[]
 }
+
+export interface CvSourceFile {
+  name: string
+  size: number
+  type: string
+  uploadedAt: string
+}
+
+export interface CvAnalysisResult {
+  score?: number
+  status: 'idle' | 'ready' | 'blocked'
+  message: string
+}
+
+export interface CvGenerationRequest {
+  requirements: string
+  scope: string
+  expectations: string
+  extraContext: string
+}

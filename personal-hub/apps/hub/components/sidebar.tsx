@@ -3,7 +3,7 @@
 import { Menu, PanelLeftClose, PanelLeftOpen, X } from 'lucide-react'
 
 const modules = [
-  { href: '/', label: 'Dashboard', code: 'DB' },
+  { href: '/dashboard', label: 'Dashboard', code: 'DB' },
   { href: '/finances', label: 'Finanças', code: 'FN' },
   { href: '/tasks', label: 'Tarefas', code: 'TK' },
   { href: '/notes', label: 'Notas', code: 'NT' },
