@@ -6,7 +6,6 @@ import { createTransaction } from '../actions'
 interface TransactionDrawerProps {
   isOpen: boolean
   onClose: () => void
-  month: string
   onSuccess?: () => void
 }
 
@@ -23,7 +22,7 @@ const CATEGORIES = [
   'Outros',
 ]
 
-export function TransactionDrawer({ isOpen, onClose, month, onSuccess }: TransactionDrawerProps) {
+export function TransactionDrawer({ isOpen, onClose, onSuccess }: TransactionDrawerProps) {
   const [isPending, startTransition] = useTransition()
   const [formData, setFormData] = useState({
     title: '',

@@ -147,7 +147,6 @@ export function FinancesPageContent({
       <TransactionDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
-        month={currentMonth}
         onSuccess={handleTransactionSaved}
       />
     </div>

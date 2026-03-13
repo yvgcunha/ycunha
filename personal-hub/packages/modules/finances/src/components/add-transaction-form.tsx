@@ -5,7 +5,6 @@ import { Card, CardContent } from '@hub/ui/card'
 import { createTransaction } from '../actions'
 
 interface AddTransactionFormProps {
-  month: string
   onSuccess?: () => void
 }
 
@@ -22,7 +21,7 @@ const CATEGORIES = [
   'Outros',
 ]
 
-export function AddTransactionForm({ month, onSuccess }: AddTransactionFormProps) {
+export function AddTransactionForm({ onSuccess }: AddTransactionFormProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [formData, setFormData] = useState({

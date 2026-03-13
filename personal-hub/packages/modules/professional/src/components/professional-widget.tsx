@@ -1,5 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@hub/ui/card'
-import { Badge } from '@hub/ui/badge'
+import { Badge, Card, CardContent, CardHeader, CardTitle } from '@hub/ui'
 import type { ProfessionalSummary } from '../types'
 
 interface ProfessionalWidgetProps {
