@@ -37,17 +37,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-[#0a1929] to-slate-900 px-4">
+    <div className="flex h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-[#0a1929] to-slate-900 px-4">
       <Card className="w-full max-w-md overflow-hidden border-white/10 bg-[#121212] shadow-2xl">
         <CardContent className="p-8">
           {/* Header */}
-          <div className="space-y-4 text-center">
-            <p className="font-mono text-[11px] uppercase tracking-[0.34em] text-[#49a296]">
-              Personal
-            </p>
-            <h1 className="text-4xl font-black uppercase tracking-[-0.04em] text-white">HUB</h1>
-            <div className="h-1 w-12 bg-gradient-to-r from-[#49a296] to-transparent mx-auto" />
-            <p className="mt-4 text-sm leading-6 text-white/66">
+          <div className="space-y-6 text-center">
+            <div className="flex justify-center">
+              <img src="/logo.png" alt="Personal HUB" className="h-20 w-20 rounded-xl" />
+            </div>
+            <p className="text-sm leading-6 text-white/66">
               Acesso ao seu espaço pessoal de produtividade e controle financeiro.
             </p>
           </div>
