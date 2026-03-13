@@ -53,7 +53,19 @@
   * {
     @apply border-border;
   }
+
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "ss01" 1, "cv03" 1, "cv04" 1;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(73, 162, 150, 0.22);
+    color: #121212;
   }
 }

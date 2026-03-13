@@ -1,2 +1,7 @@
 export * from './types'
+export * from './actions'
 export { FinancesWidget } from './components/finances-widget'
+export { TransactionList } from './components/transaction-list'
+export { BudgetProgress } from './components/budget-progress'
+export { GoalsList } from './components/goals-list'
+export { AddTransactionForm } from './components/add-transaction-form'

@@ -134,8 +134,13 @@ body::after {
 .site-logo {
   display: block;
   width: 120px;
-  height: 168px;
-  image-rendering: pixelated;
+  height: 120px;
+  object-fit: cover;
+  object-position: center top;
+  image-rendering: auto;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
 }
 .title-block { flex: 1; }
 .site-name { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
@@ -467,7 +472,7 @@ html[data-lang="pt"] .en-only { display: none !important; }
     <header class="site-header">
       <div class="header-left">
         <div class="avatar-wrap">
-          <img class="site-logo" src="./logo.svg" alt="Avatar em pixel art de Yuri Cunha" />
+          <img class="site-logo" src="./logo.png" alt="Novo logo de Yuri Cunha" />
         </div>
         <div class="title-block">
           <div class="site-name"><span class="accent">yuri</span> cunha</div>
